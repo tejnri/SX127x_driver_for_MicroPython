@@ -7,6 +7,7 @@ IS_PC = False
 IS_MICROPYTHON = (sys.implementation.name == 'micropython')
 IS_ESP8266 = (os.uname().sysname == 'esp8266')
 IS_ESP32 = (os.uname().sysname == 'esp32')
+Is_PICO  = (os.uname().sysname == 'pico') # @todo change this with correct name
 IS_TTGO_LORA_OLED = None
 IS_RPi = not (IS_MICROPYTHON or IS_PC)
 
@@ -41,7 +42,9 @@ if IS_MICROPYTHON:
     if IS_TTGO_LORA_OLED:
         from controller_esp_ttgo_lora_oled import Controller
         SOFT_SPI = True
-    else:
+    else if IS_PICO:
+        from controller_pico import Controller
+    else if IS_ESP32:
         from controller_esp import Controller
     
     
@@ -57,7 +60,6 @@ if IS_RPi:
     
     # Controller
     from controller_rpi import Controller
-    
     
     
 if IS_PC:
